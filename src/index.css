@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   TWO-INK SYSTEM — nothing but #23284B (navy) and #FFA532 (amber),
+   plus tints and shades of those two. Tints are made by dropping the
+   ink over paper, exactly as a two-colour press job would.
+   ------------------------------------------------------------------ */
+@theme {
+  --font-display: "Fraunces", "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* the two inks */
+  --color-navy: #23284b;
+  --color-amber: #ffa532;
+
+  /* paper: amber ink at 4% and 10% and 22% over paper stock */
+  --color-ivory: #fffaf2;
+  --color-parchment: #fff1dc;
+  --color-sand: #ffe3ba;
+
+  /* navy ink at reduced strength — for secondary type */
+  --color-ink: #23284b;
+  --color-inksoft: #4a4f70;
+  --color-inkfaint: #6d7291;
+
+  /* amber ink, shaded for use as type on paper (needs 4.5:1) */
+  --color-terracotta: #9a5b08;
+  --color-clay: #9a5b08;
+  --color-olive: #23284b;
+  --color-forest: #23284b;
+  --color-teal: #9a5b08;
+  --color-coral: #9a5b08;
+  --color-saffron: #9a5b08;
+  --color-sage: #ffd9a8;
+  --color-rose: #ffd9a8;
+  --color-aqua: #ffd9a8;
+  --color-indigo: #23284b;
+
+  --ease-page: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: #fffaf2;
+    color: #23284b;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 767px) {
+    body {
+      font-size: 17px;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.022em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: #ffa532;
+    color: #23284b;
+  }
+
+  :focus-visible {
+    outline: 2px solid #9a5b08;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .room-dark :focus-visible {
+    outline-color: #ffa532;
+  }
+}
+
+@layer utilities {
+  .display {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 32, "WONK" 1, "opsz" 120;
+    line-height: 0.95;
+    letter-spacing: -0.032em;
+  }
+
+  .display-soft {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 70, "WONK" 0, "opsz" 60;
+    letter-spacing: -0.024em;
+  }
+
+  .wonk {
+    font-variation-settings: "SOFT" 90, "WONK" 1, "opsz" 144;
+    font-style: italic;
+  }
+
+  .smallcaps {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.69rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .measure {
+    max-width: 65ch;
+  }
+
+  .measure-tight {
+    max-width: 58ch;
+  }
+
+  /* Photographs are graded into the two-ink world: a warm amber monochrome
+     so no third hue ever enters the page. Covers opt out via object-contain. */
+  .duotone {
+    filter: grayscale(1) contrast(1.06) brightness(1.02) sepia(0.92) saturate(2.1) hue-rotate(-8deg);
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.13;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .grain-light::after {
+    mix-blend-mode: screen;
+    opacity: 0.09;
+  }
+
+  /* animated underline that draws left→right and retracts right→left */
+  .ul-draw {
+    position: relative;
+    display: inline-block;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1.5px;
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 620ms var(--ease-page);
+    padding-bottom: 2px;
+  }
+  .ul-draw:hover,
+  .ul-draw:focus-visible {
+    background-size: 100% 1.5px;
+    background-position: 100% 100%;
+    background-image: linear-gradient(currentColor, currentColor);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 46s linear infinite;
+  }
+  .marquee-track.reverse {
+    animation-direction: reverse;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .outline-text {
+    color: transparent;
+    -webkit-text-stroke: 1.2px currentColor;
+  }
+
+  .press {
+    transition:
+      transform 220ms var(--ease-page),
+      box-shadow 320ms var(--ease-page),
+      background-color 320ms var(--ease-page),
+      color 320ms var(--ease-page);
+  }
+  .press:active {
+    transform: scale(0.98);
+  }
+
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition:
+      transform 620ms var(--ease-page),
+      box-shadow 620ms var(--ease-page);
+    will-change: transform;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .link-wipe {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  .link-wipe > span {
+    display: inline-block;
+    transition: transform 560ms var(--ease-page);
+  }
+  .link-wipe:hover > span {
+    transform: translateY(-105%);
+  }
+  .link-wipe > span + span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(105%);
+  }
+  .link-wipe:hover > span + span {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+  }
+}
